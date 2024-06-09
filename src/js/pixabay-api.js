@@ -12,13 +12,15 @@ const loader = document.querySelector('.loader');
 
 
 
-export async function getImages(query) {
+export async function getImages(query, page) {
   const params = {
     key: '44273329-392765d5a069e216bf7d20a4c',
     q: query,
     image_type: 'photo',
     orientation: 'horizontal',
     safesearch: true,
+    page: page,
+    per_page: 15,
   };
   const url = `https://pixabay.com/api/?${params}`;
 
@@ -26,12 +28,13 @@ export async function getImages(query) {
 
   try {
     const response = await axios(url, { params });
-    if (response.data.hits.length) {
+    const data = response.data.hits;
+    if (data.length) {
       const container = document.querySelector('.container');
       createMarkup(response.data.hits);
       container.insertAdjacentHTML(
         'beforeend',
-        createMarkup(response.data.hits)
+        createMarkup(data)
       );
       const lightbox = new SimpleLightbox('.container a', {
         captionsData: 'alt',
@@ -48,7 +51,7 @@ export async function getImages(query) {
       });
     }
   } catch (error) {
-    console.log(error.message);
+    alert(error.message);
   } finally {
     loader.classList.remove('is-on');
   }

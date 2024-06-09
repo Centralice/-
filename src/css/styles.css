@@ -149,3 +149,9 @@ img {
   justify-content: center;
   text-align: center;
 }
+
+/* load more btn */
+
+.load-more {
+  visibility: hidden;
+}
