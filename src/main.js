@@ -44,11 +44,25 @@ async function handleSearch(event) {
 
 async function onLoadMore() {
   try {
+    loadMore.disabled = true;
     page += 1;
     loader.classList.add('is-on');
-    getImages(query, page);
+    await getImages(query, page);
+
+    const card = document.querySelector('.item');
+    const imgEl = document.querySelector('.image');
+    const cardHeight = card.getBoundingClientRect().height;
+    const imgHeight = imgEl.getBoundingClientRect().height;
+    const totalHeight = cardHeight + imgHeight;
+    window.scrollBy({
+      left: 0,
+      top: totalHeight,
+      behavior: 'smooth',
+    });
 
   } catch (error) {
     alert(error.message);
+  } finally {
+    loadMore.disabled = false;
   }
 }

@@ -12,8 +12,6 @@ export const loader = document.querySelector('.loader');
 const loadMore = document.querySelector('.load-more');
 export let data;
 
-
-
 export async function getImages(query, page) {
   const params = {
     key: '44273329-392765d5a069e216bf7d20a4c',
@@ -31,12 +29,30 @@ export async function getImages(query, page) {
   try {
     const response = await axios(url, { params });
     data = response.data.hits;
+    const totalHits = response.data.totalHits;
     if (data.length) {
       const container = document.querySelector('.container');
       createMarkup(data);
       container.insertAdjacentHTML('beforeend', createMarkup(data));
 
-      loadMore.style.visibility = 'visible';
+      const loadMoreCheck = () => {
+        if (page < Math.ceil(totalHits / 15)) {
+          loadMore.style.visibility = 'visible';
+        } else {
+          loadMore.style.visibility = 'hidden';
+          iziToast.error({
+            title: "D'oh!",
+            message: 'Ran out of pictures :(',
+            messageColor: '#000000',
+            backgroundColor: '#ffb703',
+            position: 'topRight',
+            timeout: 5000,
+          });
+        }
+      };
+
+      loadMoreCheck(page, totalHits);
+
 
       const lightbox = new SimpleLightbox('.container a', {
         captionsData: 'alt',

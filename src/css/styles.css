@@ -130,12 +130,12 @@ border: none;
 
 img {
   height: 200px;
-  width: 100%; /* Ширина равная 100% относительно контейнера */
+  width: 100%;
   object-fit: cover;
 }
 
 .item {
-  flex-basis: calc((100% - 48px) / 3); 
+  /* flex-basis: calc((100% - 48px) / 3);  */
 
 }
 
