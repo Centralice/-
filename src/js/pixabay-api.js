@@ -7,10 +7,9 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import axios from 'axios';
 
 import { createMarkup } from '/js/render-functions';
-import { loadMore } from '../main.js';
 
-const loader = document.querySelector('.loader');
-
+export const loader = document.querySelector('.loader');
+const loadMore = document.querySelector('.load-more');
 export let data;
 
 
@@ -34,13 +33,10 @@ export async function getImages(query, page) {
     data = response.data.hits;
     if (data.length) {
       const container = document.querySelector('.container');
-      createMarkup(response.data.hits);
-      container.insertAdjacentHTML(
-        'beforeend',
-        createMarkup(data)
-      );
+      createMarkup(data);
+      container.insertAdjacentHTML('beforeend', createMarkup(data));
 
-      
+      loadMore.style.visibility = 'visible';
 
       const lightbox = new SimpleLightbox('.container a', {
         captionsData: 'alt',

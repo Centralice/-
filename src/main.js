@@ -5,8 +5,8 @@ import { getImages } from './js/pixabay-api';
 
 const formEl = document.querySelector('.search-form');
 const container = document.querySelector('.container');
-export const loadMore = document.querySelector('.load-more');
-import { data } from './js/pixabay-api';
+const loadMore = document.querySelector('.load-more');
+import { loader } from './js/pixabay-api';
 
 let query;
 let page = 1;
@@ -14,22 +14,14 @@ let page = 1;
 formEl.addEventListener('submit', handleSearch);
 loadMore.addEventListener('click', onLoadMore);
 
-function buttonState() {
-  if (query || data) {
-    loadMore.style.visibility = 'visible';
-  } else {
-    loadMore.style.visibility = 'hidden';
-  }
-}
-
 async function handleSearch(event) {
   event.preventDefault();
-
-  buttonState();
+  loadMore.style.visibility = 'hidden';  
 
   page = 1;
   container.innerHTML = '';
   query = event.target.elements.search.value.trim();
+
 
   try {
     if (!query) {
@@ -42,6 +34,7 @@ async function handleSearch(event) {
       });
     } else {
       getImages(query, page);
+
       formEl.reset();
     }
   } catch (error) {
@@ -52,8 +45,9 @@ async function handleSearch(event) {
 async function onLoadMore() {
   try {
     page += 1;
-    buttonState();
+    loader.classList.add('is-on');
     getImages(query, page);
+
   } catch (error) {
     alert(error.message);
   }
