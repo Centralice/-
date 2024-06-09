@@ -7,8 +7,11 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import axios from 'axios';
 
 import { createMarkup } from '/js/render-functions';
+import { loadMore } from '../main.js';
 
 const loader = document.querySelector('.loader');
+
+export let data;
 
 
 
@@ -28,7 +31,7 @@ export async function getImages(query, page) {
 
   try {
     const response = await axios(url, { params });
-    const data = response.data.hits;
+    data = response.data.hits;
     if (data.length) {
       const container = document.querySelector('.container');
       createMarkup(response.data.hits);
@@ -36,6 +39,9 @@ export async function getImages(query, page) {
         'beforeend',
         createMarkup(data)
       );
+
+      
+
       const lightbox = new SimpleLightbox('.container a', {
         captionsData: 'alt',
         captionDelay: 250,
