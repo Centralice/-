@@ -33,7 +33,7 @@ async function handleSearch(event) {
         timeout: 5000,
       });
     } else {
-      getImages(query, page);
+      await getImages(query, page);
 
       formEl.reset();
     }
